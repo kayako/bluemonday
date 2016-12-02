@@ -196,7 +196,7 @@ func (p *Policy) sanitize(r io.Reader) *bytes.Buffer {
 
 			if !skipElementContent {
 				switch strings.ToLower(mostRecentlyStartedToken) {
-				case "javascript":
+				case "script":
 					// not encouraged, but if a policy allows JavaScript we
 					// should not HTML escape it as that would break the output
 					buff.WriteString(token.Data)
