@@ -511,7 +511,7 @@ func (p *Policy) sanitizeStyles(attr html.Attribute, sps map[string]stylePolicy)
 		if len(parts) != 2 {
 			continue
 		}
-		propName := strings.TrimSpace(parts[0])
+		propName := strings.ToLower(strings.TrimSpace(parts[0]))
 		propValue := strings.TrimSpace(parts[1])
 		if sp, ok := sps[propName]; ok {
 			if sp.regexp != nil {

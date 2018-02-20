@@ -34,7 +34,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/microcosm-cc/bluemonday"
+	"github.com/kayako/bluemonday"
 )
 
 func Example() {
@@ -211,7 +211,7 @@ func ExamplePolicy_AllowStyles() {
 	// The span has an invalid 'color' which will be stripped along with other disallowed properties
 	html := p.Sanitize(
 		`<p style="color:#f00;">
-	<span style="text-decoration: underline; background-image: url(javascript:alert('XSS')); color: #f00ba">
+	<span style="TEXT-DECORATION: underline; background-image: url(javascript:alert('XSS')); color: #f00ba">
 		Red underlined <strong style="text-decoration:none;">text</strong>
 	</span>
 </p>`,
