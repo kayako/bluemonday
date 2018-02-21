@@ -92,39 +92,6 @@ func TestSignatureBehaviour(t *testing.T) {
 	}
 }
 
-func TestAllowDocType(t *testing.T) {
-	p := NewPolicy()
-	p.AllowElements("b")
-
-	in := "<!DOCTYPE html>Hello, <b>World</b>!"
-	expected := "Hello, <b>World</b>!"
-
-	out := p.Sanitize(in)
-	if out != expected {
-		t.Errorf(
-			"test 1 failed;\ninput   : %s\noutput  : %s\nexpected: %s",
-			in,
-			out,
-			expected,
-		)
-	}
-
-	// Allow the doctype and run the test again
-	p.AllowDocType(true)
-
-	expected = "<!DOCTYPE html>Hello, <b>World</b>!"
-
-	out = p.Sanitize(in)
-	if out != expected {
-		t.Errorf(
-			"test 1 failed;\ninput   : %s\noutput  : %s\nexpected: %s",
-			in,
-			out,
-			expected,
-		)
-	}
-}
-
 func TestLinks(t *testing.T) {
 
 	tests := []test{
@@ -1675,5 +1642,45 @@ AAAASUVORK5CYII=" alt="">`
 			input,
 			out,
 			expected)
+	}
+}
+
+func TestIssue55ScriptTags(t *testing.T) {
+	p1 := NewPolicy()
+	p2 := UGCPolicy()
+	p3 := UGCPolicy().AllowElements("script")
+
+	in := `<SCRIPT>document.write('<h1><header/h1>')</SCRIPT>`
+	expected := ``
+	out := p1.Sanitize(in)
+	if out != expected {
+		t.Errorf(
+			"test failed;\ninput   : %s\noutput  : %s\nexpected: %s",
+			in,
+			out,
+			expected,
+		)
+	}
+
+	expected = ``
+	out = p2.Sanitize(in)
+	if out != expected {
+		t.Errorf(
+			"test failed;\ninput   : %s\noutput  : %s\nexpected: %s",
+			in,
+			out,
+			expected,
+		)
+	}
+
+	expected = `<script>document.write('<h1><header/h1>')</script>`
+	out = p3.Sanitize(in)
+	if out != expected {
+		t.Errorf(
+			"test failed;\ninput   : %s\noutput  : %s\nexpected: %s",
+			in,
+			out,
+			expected,
+		)
 	}
 }
